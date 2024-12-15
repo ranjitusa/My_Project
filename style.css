@@ -1,0 +1,86 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+.container {
+    max-width: 750px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #e0f7fa; /* Light Cyan */
+    border-radius: 5px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00796b; /* Teal */
+    font-size: 24px;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #004d40; /* Dark Teal */
+    font-weight: bold; 
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 3px;
+    border-radius: 5px;
+    border: 1px solid #80cbc4; /* Light Teal */
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    font-weight: bold; 
+}
+
+button {
+    background-color: #00796b; /* Teal */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #004d40; /* Dark Teal */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #004d40; /* Dark Teal */
+    padding: 12px;
+}
+
+th {
+    background-color: #80cbc4; /* Light Teal */
+    font-weight: bold;
+}
+
+.edit-btn,
+.delete-btn {
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #004d40; /* Dark Teal */
+    color: white;
+    padding: 5p

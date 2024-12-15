@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax and Payment Tracking System</title>
+    <link rel="stylesheet" href="/static/style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Tax and Payment Tracking System</h1>
+        <form id="taxForm" action="/submit" method="POST">
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company" required><br>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required><br>
+            <label for="paymentDate">Payment Date:</label>
+            <input type="date" id="paymentDate" name="paymentDate"><br>
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+            </select><br>
+            <label for="dueDate">Due Date:</label>
+            <select id="duDate" name="dueDate" required>
+                <option value="">Select Due Date</option>
+                {% for due_date in due_dates %}
+                <option value="{{ due_date }}">{{ due_date }}</option>
+                {% endfor %}
+            </select><br>
+            <label for="taxRate">Tax Rate:</label>
+            <input type="number" id="taxRate" name="taxRate" step="0.01" placeholder="Enter tax rate (e.g., 0.06)" required><br>
+            
+            
+            <button type="submit">Save</button>
+            
+        </form>
+ 
+        <h3>Select a due date to view the dynamic payment summary</h3>
+
+        <select id="dueDate" name="dueDate" required>
+            <option value="">Select Due Date</option>
+                    {% for due_date in due_dates %}
+                    <option value="{{ due_date }}">{{ due_date }}</option>
+                    {% endfor %}
+        </select><br>
+
+        <div id="summary">  <div class="mt-4">
+            <h3>All Payments</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th> <!-- Added column for ID -->
+                        <th>Company</th>
+                        <th>Amount</th>
+                        <th>Payment Date</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for records in records %}
+                    <tr>
+                        <td>{{ records[0] }}</td>
+                    <td>{{ records[1] }}</td>
+                    <td>{{ records[2] }}</td>
+                    <td>{{ records[3]|format_date }}</td> 
+                    <td>{{ records[4] }}</td>
+                    <td>{{ records[5] }}</td>
+                    <td>                    <button onclick="openEditPopup('{{ records[0] }}', '{{ records[1] }}', '{{ records[2] }}', '{{ records[3] }}', '{{ records[4] }}', '{{ records[5] }}', '{{ records[6] }}')">Edit</button>
+                        <button onclick="deleteRecord('{{ records[0] }}')">Delete</button></td>
+                    
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+           <div class="mt-4">
+        <h3>All Payments</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th> <!-- Added column for ID -->
+                    <th>Company</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for records in records %}
+                <tr>
+                    <td>{{ records[0] }}</td>
+                <td>{{ records[1] }}</td>
+                <td>{{ records[2] }}</td>
+                
+                <td>{% if records[3] %}{{ records[3]|format_date }}{% else %}NA{% endif %}</td> 
+
+                <td>{{ records[4] }}</td>
+                <td>{{ records[5] }}</td>
+                <td>                   
+                
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="mt-4">
+        <h3>All Payments</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th> <!-- Added column for ID -->
+                    <th>Company</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for records in records %}
+                <tr>
+                    <td>{{ records[0] }}</td>
+                <td>{{ records[1] }}</td>
+                <td>{{ records[2] }}</td>
+                <td>{% if records[3] %}{{ records[3]|format_date }}{% else %}NA{% endif %}</td> 
+                <td>{{ records[4] }}</td>
+                <td>{{ records[5] }}</td>
+                <td>       <button onclick="openEditPopup('{{ records[0] }}', '{{ records[1] }}', '{{ records[2] }}', '{{ records[3] }}', '{{ records[4] }}', '{{ records[5] }}', '{{ records[6] }}')">Edit</button>
+           
+                    <button onclick="deleteRecord('{{ records[0] }}')">Delete</button>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+        <!-- Edit Popup -->
+        <div class="overlay" id="overlay"></div>
+        <div class="edit-popup" id="editPopup">
+            <h2>Edit Record</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="editId">
+                <label for="editCompany">Company:</label>
+                <input type="text" id="editCompany" name="editCompany" required><br>
+                <label for="editAmount">Amount:</label>
+                <input type="number" id="editAmount" name="editAmount" step="0.01" required><br>
+                <label for="editPaymentDate">Payment Date:</label>
+                <input type="date" id="editPaymentDate" name="editPaymentDate" required><br>
+                <label for="editStatus">Status:</label>
+                <select id="editStatus" name="editStatus" required>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                </select><br>
+                <label for="editDueDate">Due Date:</label>
+                <select id="editDueDate" name="editDueDate" required>
+                    <option value="">Select Due Date</option>
+                    {% for due_date in due_dates %}
+                    <option value="{{ due_date }}">{{ due_date }}</option>
+                    {% endfor %}
+                </select><br>
+                <label for="editTaxRate">Tax Rate:</label>
+                <input type="number" id="editTaxRate" name="editTaxRate" step="0.01" required><br>
+                <button type="button" onclick="saveEdit()">Save</button>
+                <button type="button" onclick="closeEditPopup()">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
+
